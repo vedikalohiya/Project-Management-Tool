@@ -36,26 +36,27 @@ export default function Column({ column, tasks, selectedTasks = [], onTaskSelect
   }
 
   return (
-    <div style={{
-      width: '300px', flexShrink: 0,
-      background: 'var(--surface-2)',
-      borderRadius: 'var(--radius-lg)',
-      border: '1px solid var(--border)',
+    <div className="glass-panel" style={{
+      width: '320px', flexShrink: 0,
       display: 'flex', flexDirection: 'column',
-      maxHeight: 'calc(100vh - 140px)',
-      boxShadow: 'var(--shadow-sm)'
+      maxHeight: 'calc(100vh - 120px)',
+      background: 'var(--glass-bg)',
+      backdropFilter: 'blur(16px)',
+      borderTop: '0', borderBottom: '0',
+      boxShadow: '0 8px 30px rgba(0,0,0,0.05)',
+      overflow: 'visible'
     }}>
       {/* Column header */}
-      <div style={{ padding: '0.875rem 1rem 0.75rem', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h3 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text)' }}>
+      <div style={{ padding: '1.2rem 1.2rem 1rem', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--text)' }}>
               {column.title}
             </h3>
             <span style={{
-              fontSize: '11px', padding: '2px 7px', borderRadius: '20px',
-              background: 'var(--border)', color: 'var(--text-secondary)',
-              fontWeight: '600'
+              fontSize: '0.75rem', padding: '3px 10px', borderRadius: '20px',
+              background: 'var(--primary)', color: 'white',
+              fontWeight: '700', boxShadow: '0 2px 5px rgba(99,102,241,0.3)'
             }}>
               {tasks.length}
             </span>
@@ -65,26 +66,36 @@ export default function Column({ column, tasks, selectedTasks = [], onTaskSelect
             style={{
               background: 'none', border: 'none',
               color: 'var(--text-tertiary)', cursor: 'pointer',
-              fontSize: '16px', padding: '2px 6px', borderRadius: '4px'
+              fontSize: '18px', padding: '4px 8px', borderRadius: '6px',
+              transition: 'background 0.2s, color 0.2s'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--danger-bg)'
+              e.currentTarget.style.color = 'var(--danger)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'none'
+              e.currentTarget.style.color = 'var(--text-tertiary)'
             }}
           >×</button>
         </div>
 
         {/* Progress bar */}
         {tasks.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              flex: 1, height: '4px', borderRadius: '2px',
-              background: 'var(--border)', overflow: 'hidden'
+              flex: 1, height: '6px', borderRadius: '3px',
+              background: 'var(--surface-2)', overflow: 'hidden',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
             }}>
               <div style={{
-                height: '100%', borderRadius: '2px',
-                background: 'var(--primary)',
+                height: '100%', borderRadius: '3px',
+                background: 'var(--gradient-main)',
                 width: `${progress}%`,
-                transition: 'width 0.3s'
+                transition: 'width 0.4s ease-out'
               }} />
             </div>
-            <span style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>{progress}%</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' }}>{progress}%</span>
           </div>
         )}
       </div>
@@ -95,9 +106,10 @@ export default function Column({ column, tasks, selectedTasks = [], onTaskSelect
           ref={setNodeRef}
           style={{
             flex: 1, overflowY: 'auto',
-            padding: '0.75rem',
-            display: 'flex', flexDirection: 'column', gap: '6px',
-            minHeight: '60px'
+            padding: '1rem 0.5rem',
+            display: 'flex', flexDirection: 'column', gap: '10px',
+            minHeight: '80px',
+            scrollBehavior: 'smooth'
           }}
         >
           {tasks.map(task => (
@@ -113,76 +125,59 @@ export default function Column({ column, tasks, selectedTasks = [], onTaskSelect
       </SortableContext>
 
       {/* Add task */}
-      <div style={{ padding: '0.75rem', borderTop: '1px solid var(--border)' }}>
+      <div style={{ padding: '1rem', borderTop: '1px solid var(--border)' }}>
         {showInput ? (
-          <form onSubmit={handleAddTask} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <form onSubmit={handleAddTask} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <input
               autoFocus value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
-              placeholder="Task title..."
-              style={{
-                padding: '8px 10px', borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border)',
-                background: 'var(--surface)',
-                color: 'var(--text)',
-                fontSize: '0.875rem'
-              }}
+              placeholder="What needs to be done?"
+              className="input-modern"
+              style={{ fontSize: '0.9rem', padding: '0.8rem' }}
             />
-            <div style={{ display: 'flex', gap: '4px', fontSize: '12px' }}>
+            <div style={{ display: 'flex', gap: '8px', fontSize: '13px' }}>
               <select value={newTaskPriority} onChange={(e) => setNewTaskPriority(e.target.value)}
-                style={{
-                  flex: 1, padding: '6px 8px', borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--border)',
-                  background: 'var(--surface)', color: 'var(--text)',
-                  fontSize: '0.8rem', cursor: 'pointer'
-                }}>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                className="input-modern"
+                style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem' }}>
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
               </select>
               <input type="date" value={newTaskDueDate} onChange={(e) => setNewTaskDueDate(e.target.value)}
-                style={{
-                  flex: 1, padding: '6px 8px', borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--border)',
-                  background: 'var(--surface)', color: 'var(--text)',
-                  fontSize: '0.8rem'
-                }}
+                className="input-modern"
+                style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem' }}
               />
             </div>
-            <div style={{ display: 'flex', gap: '4px' }}>
-              <button type="submit" disabled={adding} style={{
-                flex: 1, padding: '6px', borderRadius: 'var(--radius-sm)',
-                background: 'var(--primary)', color: 'white',
-                border: 'none', cursor: 'pointer', fontSize: '0.875rem', fontWeight: '500'
-              }}>
-                {adding ? 'Adding...' : 'Add task'}
+            <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+              <button type="submit" disabled={adding} className="btn-primary" style={{ flex: 1, padding: '0.6rem' }}>
+                {adding ? 'Adding...' : 'Save Task'}
               </button>
-              <button type="button" onClick={() => setShowInput(false)} style={{
-                padding: '6px 10px', borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border)',
-                background: 'var(--surface)',
-                color: 'var(--text)', cursor: 'pointer', fontSize: '0.875rem'
-              }}>✕</button>
+              <button type="button" onClick={() => setShowInput(false)} className="btn-secondary" style={{ padding: '0.6rem 1rem' }}>
+                ✕
+              </button>
             </div>
           </form>
         ) : (
-          <button onClick={() => setShowInput(true)} style={{
-            width: '100%', padding: '7px', borderRadius: 'var(--radius-sm)',
-            border: '1px dashed var(--border)',
-            background: 'transparent', cursor: 'pointer',
-            fontSize: '0.875rem', color: 'var(--text-tertiary)',
-            transition: 'all 0.15s'
-          }}
+          <button onClick={() => setShowInput(true)} 
+            style={{
+              width: '100%', padding: '0.9rem', borderRadius: 'var(--radius-md)',
+              border: '2px dashed var(--border)',
+              background: 'transparent', cursor: 'pointer',
+              fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-secondary)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
             onMouseEnter={e => {
               e.currentTarget.style.borderColor = 'var(--primary)'
               e.currentTarget.style.color = 'var(--primary)'
+              e.currentTarget.style.background = 'rgba(99,102,241,0.05)'
             }}
             onMouseLeave={e => {
               e.currentTarget.style.borderColor = 'var(--border)'
-              e.currentTarget.style.color = 'var(--text-tertiary)'
+              e.currentTarget.style.color = 'var(--text-secondary)'
+              e.currentTarget.style.background = 'transparent'
             }}
           >
-            + Add task
+            + Add New Task
           </button>
         )}
       </div>

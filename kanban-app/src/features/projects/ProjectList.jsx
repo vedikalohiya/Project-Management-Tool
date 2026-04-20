@@ -36,76 +36,55 @@ export default function ProjectList({ onSelectProject }) {
   const colors = ['#6366f1', '#ec4899', '#f59e0b', '#22c55e', '#3b82f6', '#8b5cf6']
 
   return (
-    <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+    <div className="animate-fade-in" style={{ maxWidth: '1100px', margin: '2rem auto' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1.5rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--text)' }}>Your Projects</h2>
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text)', letterSpacing: '-0.02em' }}>Your Projects</h2>
+          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '4px', fontWeight: '500' }}>
             {projects.length} project{projects.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           {/* Search */}
-          <input
-            type="text"
-            placeholder="🔍 Search projects..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              padding: '8px 14px', borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border)',
-              background: 'var(--surface)',
-              color: 'var(--text)',
-              fontSize: '0.875rem', width: '200px'
-            }}
-          />
-          <button onClick={() => setShowInput(!showInput)} style={{
-            padding: '8px 16px', borderRadius: 'var(--radius-md)',
-            background: 'var(--primary)', color: 'white',
-            border: 'none', cursor: 'pointer',
-            fontSize: '0.875rem', fontWeight: '600',
-            boxShadow: '0 2px 8px rgba(99,102,241,0.3)'
-          }}>
-            + New Project
+          <div style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="input-modern"
+              style={{ paddingLeft: '40px', width: '240px' }}
+            />
+          </div>
+          <button onClick={() => setShowInput(!showInput)} className="btn-primary" style={{ padding: '0.9rem 1.25rem' }}>
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+            New Project
           </button>
         </div>
       </div>
 
       {/* Create form */}
       {showInput && (
-        <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border)', padding: '1.25rem',
-          marginBottom: '1.5rem', boxShadow: 'var(--shadow-sm)'
+        <div className="glass-card animate-fade-in" style={{
+          padding: '1.5rem',
+          marginBottom: '2rem',
         }}>
-          <p style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--text)' }}>
-            New Project
+          <p style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '1rem', color: 'var(--text)' }}>
+            Start a new project
           </p>
-          <form onSubmit={handleCreate} style={{ display: 'flex', gap: '8px' }}>
+          <form onSubmit={handleCreate} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <input
               autoFocus type="text" placeholder="Project name..."
               value={newName} onChange={(e) => setNewName(e.target.value)}
-              style={{
-                flex: 1, padding: '8px 12px', borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border)',
-                background: 'var(--surface-2)',
-                color: 'var(--text)', fontSize: '0.875rem'
-              }}
+              className="input-modern"
+              style={{ flex: 1 }}
             />
-            <button type="submit" disabled={creating} style={{
-              padding: '8px 20px', borderRadius: 'var(--radius-md)',
-              background: 'var(--primary)', color: 'white',
-              border: 'none', cursor: 'pointer', fontWeight: '600'
-            }}>
-              {creating ? 'Creating...' : 'Create'}
+            <button type="submit" disabled={creating} className="btn-primary">
+              {creating ? 'Creating...' : 'Create Project'}
             </button>
-            <button type="button" onClick={() => setShowInput(false)} style={{
-              padding: '8px 14px', borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border)',
-              background: 'var(--surface-2)',
-              color: 'var(--text)', cursor: 'pointer'
-            }}>
+            <button type="button" onClick={() => setShowInput(false)} className="btn-secondary">
               Cancel
             </button>
           </form>
@@ -114,60 +93,51 @@ export default function ProjectList({ onSelectProject }) {
 
       {/* Projects grid */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
+        <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--primary)', fontWeight: '600', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+          <svg className="animate-spin" width="36" height="36" fill="none" viewBox="0 0 24 24" style={{ animation: 'spin 1s linear infinite' }}>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
           Loading projects...
         </div>
       ) : filtered.length === 0 ? (
-        <div style={{
-          textAlign: 'center', padding: '4rem 2rem',
-          background: 'var(--surface)', borderRadius: 'var(--radius-lg)',
-          border: '1px dashed var(--border)'
+        <div className="glass-card" style={{
+          textAlign: 'center', padding: '5rem 2rem', borderStyle: 'dashed'
         }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📋</div>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-            {search ? `No projects matching "${search}"` : 'No projects yet'}
+          <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>✨</div>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: '500' }}>
+            {search ? `No projects matching "${search}"` : 'Your workspace is empty'}
           </p>
           {!search && (
-            <button onClick={() => setShowInput(true)} style={{
-              padding: '10px 20px', borderRadius: 'var(--radius-md)',
-              background: 'var(--primary)', color: 'white',
-              border: 'none', cursor: 'pointer', fontWeight: '600'
-            }}>
+            <button onClick={() => setShowInput(true)} className="btn-primary">
               Create your first project
             </button>
           )}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
           {filtered.map((project, i) => (
             <div
               key={project.id}
               onClick={() => onSelectProject(project)}
-              style={{
-                background: 'var(--surface)', borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--border)', cursor: 'pointer',
-                overflow: 'hidden', transition: 'transform 0.15s, box-shadow 0.15s',
-                boxShadow: 'var(--shadow-sm)'
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = 'var(--shadow-md)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = 'var(--shadow-sm)'
-              }}
+              className="glass-card"
+              style={{ cursor: 'pointer', overflow: 'hidden', padding: 0 }}
             >
-              {/* Color bar */}
-              <div style={{ height: '4px', background: colors[i % colors.length] }} />
+              {/* Color gradient bar */}
+              <div style={{ 
+                height: '6px', 
+                background: `linear-gradient(90deg, ${colors[i % colors.length]}, ${colors[(i + 1) % colors.length]})`
+              }} />
 
-              <div style={{ padding: '1.25rem' }}>
+              <div style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{
-                    width: '36px', height: '36px', borderRadius: '10px',
-                    background: colors[i % colors.length] + '20',
+                    width: '44px', height: '44px', borderRadius: '12px',
+                    background: colors[i % colors.length] + '15',
+                    color: colors[i % colors.length],
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '1.1rem', marginBottom: '0.75rem'
+                    fontSize: '1.3rem', marginBottom: '1rem',
+                    boxShadow: `0 4px 10px ${colors[i % colors.length]}15`
                   }}>
                     📁
                   </div>
@@ -179,22 +149,37 @@ export default function ProjectList({ onSelectProject }) {
                     style={{
                       background: 'none', border: 'none',
                       color: 'var(--text-tertiary)', cursor: 'pointer',
-                      fontSize: '1.1rem', padding: '4px',
-                      borderRadius: '6px', lineHeight: 1
+                      fontSize: '1.2rem', padding: '6px',
+                      borderRadius: '8px', lineHeight: 1,
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--danger-bg)'
+                      e.currentTarget.style.color = 'var(--danger)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'none'
+                      e.currentTarget.style.color = 'var(--text-tertiary)'
                     }}
                   >×</button>
                 </div>
-                <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text)', marginBottom: '4px' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text)', marginBottom: '8px' }}>
                   {project.name}
                 </h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>
-                  Created {new Date(project.created_at).toLocaleDateString()}
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: '500' }}>
+                  Created {new Date(project.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               </div>
             </div>
           ))}
         </div>
       )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}} />
     </div>
   )
 }

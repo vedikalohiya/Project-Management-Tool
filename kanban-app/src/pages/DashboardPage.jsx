@@ -26,82 +26,101 @@ export default function DashboardPage() {
   }, [selectedProject])
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg)' }}>
-      <nav style={{
-        background: 'var(--surface)',
-        padding: '0 2rem',
-        height: '56px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottom: '1px solid var(--border)',
-        boxShadow: 'var(--shadow-sm)',
-        position: 'sticky', top: 0, zIndex: 30
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{
-            width: '28px', height: '28px', borderRadius: '8px',
-            background: 'var(--primary)', display: 'flex',
-            alignItems: 'center', justifyContent: 'center'
-          }}>
-            <span style={{ color: 'white', fontSize: '14px' }}>K</span>
+    <>
+      <div className="bg-shapes">
+        <div className="bg-shape-1"></div>
+        <div className="bg-shape-2"></div>
+      </div>
+      <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1, paddingBottom: '2rem' }}>
+        <nav className="glass-panel" style={{
+          margin: '1rem 2rem',
+          padding: '0 1.5rem',
+          height: '64px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'sticky', top: '1rem', zIndex: 30,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '36px', height: '36px', borderRadius: '12px',
+              background: 'var(--gradient-main)', display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
+            }}>
+              <span style={{ color: 'white', fontSize: '18px', fontWeight: '800' }}>K</span>
+            </div>
+            <h1
+              onClick={() => setSelectedProject(null)}
+              style={{ fontSize: '1.2rem', fontWeight: '800', cursor: 'pointer', color: 'var(--text)' }}
+            >
+              Kanban
+              {selectedProject && (
+                <span style={{ color: 'var(--text-tertiary)', fontWeight: '500', marginLeft: '8px' }}>
+                  / <span style={{ color: 'var(--primary)' }}>{selectedProject.name}</span>
+                </span>
+              )}
+            </h1>
           </div>
-          <h1
-            onClick={() => setSelectedProject(null)}
-            style={{ fontSize: '1rem', fontWeight: '600', cursor: 'pointer', color: 'var(--text)' }}
-          >
-            Kanban {selectedProject && <span style={{ color: 'var(--text-secondary)', fontWeight: '400' }}>/ {selectedProject.name}</span>}
-          </h1>
-        </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{
-            fontSize: '0.8rem', color: 'var(--text-secondary)',
-            background: 'var(--surface-2)', padding: '4px 10px',
-            borderRadius: '20px', border: '1px solid var(--border)'
-          }}>
-            {user?.email}
-          </span>
-          <button onClick={toggleTheme} style={{
-            width: '36px', height: '36px', borderRadius: '8px',
-            border: '1px solid var(--border)',
-            background: 'var(--surface-2)',
-            cursor: 'pointer', fontSize: '1rem',
-            display: 'flex', alignItems: 'center', justifyContent: 'center'
-          }}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <NotificationBell onClick={() => {
-            setShowNotifications((prev) => {
-              const next = !prev
-              if (next) markAllRead()
-              return next
-            })
-          }} />
-          <button onClick={signOut} style={{
-            padding: '0 14px', height: '36px', borderRadius: '8px',
-            border: '1px solid var(--border)',
-            background: 'var(--surface-2)',
-            color: 'var(--text)',
-            cursor: 'pointer', fontSize: '0.875rem', fontWeight: '500'
-          }}>
-            Sign out
-          </button>
-        </div>
-      </nav>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{
+              fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600',
+              background: 'var(--surface-2)', padding: '6px 14px',
+              borderRadius: '20px', border: '1px solid var(--border)',
+              backdropFilter: 'blur(4px)'
+            }}>
+              {user?.email}
+            </span>
+            <button onClick={toggleTheme} className="btn-secondary" style={{
+              width: '40px', height: '40px', padding: 0, borderRadius: '12px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1.2rem'
+            }}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <div style={{ 
+              width: '40px', height: '40px', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'var(--surface-2)', borderRadius: '12px',
+              border: '1px solid var(--border)', cursor: 'pointer',
+              transition: 'all 0.3s'
+            }} className="hover-lift">
+              <NotificationBell onClick={() => {
+                setShowNotifications((prev) => {
+                  const next = !prev
+                  if (next) markAllRead()
+                  return next
+                })
+              }} />
+            </div>
+            <button onClick={signOut} className="btn-primary" style={{
+              padding: '0 1.2rem', height: '40px'
+            }}>
+              Sign out
+            </button>
+          </div>
+        </nav>
 
-      <main style={{ padding: '1.5rem 2rem' }}>
-        {selectedProject
-          ? <BoardPage project={selectedProject} onBack={() => setSelectedProject(null)} />
-          : <ProjectList onSelectProject={setSelectedProject} />
+        <main className="animate-fade-in" style={{ padding: '0.5rem 2rem' }}>
+          {selectedProject
+            ? <BoardPage project={selectedProject} onBack={() => setSelectedProject(null)} />
+            : <ProjectList onSelectProject={setSelectedProject} />
+          }
+        </main>
+
+        {showNotifications && (
+          <NotificationDrawer onClose={() => setShowNotifications(false)} />
+        )}
+
+        <NotificationToasts />
+      </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hover-lift:hover {
+          transform: translateY(-2px);
+          border-color: var(--primary) !important;
         }
-      </main>
-
-      {showNotifications && (
-        <NotificationDrawer onClose={() => setShowNotifications(false)} />
-      )}
-
-      <NotificationToasts />
-    </div>
+      `}} />
+    </>
   )
 }
