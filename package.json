@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "dev": "npm --prefix ./kanban-app run dev",
+    "build": "npm --prefix ./kanban-app run build",
+    "lint": "npm --prefix ./kanban-app run lint",
+    "preview": "npm --prefix ./kanban-app run preview"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@hookform/resolvers": "^5.2.2",
+    "@supabase/supabase-js": "^2.103.3",
+    "@tanstack/react-query": "^5.99.2",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^1.8.0",
+    "react-hook-form": "^7.72.1",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  }
+}
