@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# Kanban Project Management Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A feature-rich Kanban application for planning, tracking, and managing projects with modern workflows.
 
-Currently, two official plugins are available:
+![App Preview](./src/assets/hero.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Authentication with login and signup flow
+- Start page, auth page, and dashboard navigation
+- Kanban board with drag and drop
+- List, calendar, and stats views
+- Bulk task actions (select, move, delete)
+- Advanced filters and global task search
+- Task details with assignees, labels, comments, due dates, and priority
+- Keyboard shortcuts and undo/redo
+- Realtime in-app notifications
+- Dark mode with persisted preference
+- Burndown chart and completion metrics
+- Recurring tasks, attachments, and custom fields (stored in local browser metadata)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React + Vite
+- Zustand for state management
+- Supabase for auth/data/realtime
+- dnd-kit for drag and drop
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+  features/
+    auth/
+    board/
+    notifications/
+    projects/
+    tasks/
+  pages/
+  store/
+  lib/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1. Install dependencies
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 2. Configure environment
+
+Create `kanban-app/.env` with:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### 3. Run development server
+
+From the workspace root:
+
+```bash
+npm run dev
+```
+
+Or from this folder:
+
+```bash
+npm run dev
+```
+
+## Available Scripts
+
+- `npm run dev` - start local development server
+- `npm run build` - create production build
+- `npm run lint` - run lint checks
+- `npm run preview` - preview production build
+
+## Notes
+
+- Advanced task extras (attachments, recurrence, custom fields) are currently stored in localStorage.
+- Ensure Supabase RLS policies are configured for your project tables.
